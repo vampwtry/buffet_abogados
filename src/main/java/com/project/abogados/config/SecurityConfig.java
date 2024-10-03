@@ -20,9 +20,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/registro", "/login", "/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers("/", "/registro", "/login", "/css/**", "/js/**", "/img/**", "/api/usuarios/registro","/api/usuarios/listar").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
+                )
+
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/usuarios/registro","/api/usuarios/listar")
                 )
 
                 .formLogin(form -> form

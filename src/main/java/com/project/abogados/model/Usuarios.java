@@ -1,12 +1,10 @@
 package com.project.abogados.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "usuarios")
@@ -29,6 +27,7 @@ public class Usuarios {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rol_id")
+    @JsonIgnore //Esta anotacion hace que el cuerpo JSON ignore el campo de roles, si se quiere mostrar el campo de roles se debe cambiar la relaciona EAGER.
     private Roles rol;
 
 
