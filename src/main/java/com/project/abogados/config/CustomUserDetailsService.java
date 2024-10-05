@@ -28,7 +28,6 @@ public class CustomUserDetailsService implements UserDetailsService{
         Optional<Usuarios> optionalUsuario = usuarioRepository.findByNumeroDocumento(numeroDocumento);
         Usuarios usuario = optionalUsuario.orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con número de documento: " + username));
 
-
         Roles rol = usuario.getRol();
 
         if (rol == null) {

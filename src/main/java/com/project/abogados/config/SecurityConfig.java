@@ -34,15 +34,27 @@ public class SecurityConfig {
                         .usernameParameter("username")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/home", true)
-                        .successHandler( ((request, response, authentication) -> {
-                                    boolean isAdmin = authentication.getAuthorities().stream()
-                                            .anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"));
-                                    if (isAdmin){
-                                        response.sendRedirect("/admin");
-                                    }
-                                }
-                                )
-                        )
+                        .successHandler((request, response, authentication) -> {
+                            // Redirigir según el rol del usuario autenticado
+                            String redirectUrl = "/home"; // Valor por defecto si no coincide con ningún rol
+
+                            boolean isAdmin = authentication.getAuthorities().stream()
+                                    .anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"));
+                            boolean isUser = authentication.getAuthorities().stream()
+                                    .anyMatch(role -> role.getAuthority().equals("ROLE_USER"));
+                            boolean isAbogado = authentication.getAuthorities().stream()
+                                    .anyMatch(role -> role.getAuthority().equals("ROLE_ABOGADO"));
+
+                            if (isAdmin) {
+                                redirectUrl = "/admin";
+                            } else if (isUser) {
+                                redirectUrl = "/user";
+                            } else if (isAbogado) {
+                                redirectUrl = "/abogado";
+                            }
+
+                            response.sendRedirect(redirectUrl);
+                        })
                         .permitAll()
                 )
 
