@@ -64,6 +64,7 @@ public class UsuarioService {
         List<Usuarios> usuarios = usuarioRepository.findAll();
         return usuarios.stream().map(this::transformarDTO).collect(Collectors.toList());
     }
+
     private UsuarioDTO transformarDTO(Usuarios usuarios){
         UsuarioDTO usuarioDTO = new UsuarioDTO();
         usuarioDTO.setId_user(usuarios.getId_user());
@@ -103,31 +104,36 @@ public class UsuarioService {
         return usuarioDTO;
     }
 
-    public void actualizarUsuario(UsuarioDTO usuarioDTO){
+    public void actualizarUsuario(UsuarioDTO usuarioDTO) {
+        // Busca el usuario en la base de datos
         Usuarios usuarios = usuarioRepository.findById(usuarioDTO.getId_user())
-                .orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        usuarioDTO.setPrimerNombre(usuarios.getPrimerNombre());
-        usuarioDTO.setSegundoNombre(usuarios.getSegundoNombre());
-        usuarioDTO.setPrimerApellido(usuarios.getPrimerApellido());
-        usuarioDTO.setSegundoApellido(usuarios.getSegundoApellido());
-        usuarioDTO.setCorreo(usuarios.getCorreo());
-        usuarioDTO.setNumeroDocumento(usuarios.getNumeroDocumento());
-        usuarioDTO.setNumeroTelefono(usuarios.getNumeroTelefono());
+        // Actualiza los campos del objeto Usuarios con los valores del DTO
+        usuarios.setPrimerNombre(usuarioDTO.getPrimerNombre());
+        usuarios.setSegundoNombre(usuarioDTO.getSegundoNombre());
+        usuarios.setPrimerApellido(usuarioDTO.getPrimerApellido());
+        usuarios.setSegundoApellido(usuarioDTO.getSegundoApellido());
+        usuarios.setCorreo(usuarioDTO.getCorreo());
+        usuarios.setNumeroDocumento(usuarioDTO.getNumeroDocumento());
+        usuarios.setNumeroTelefono(usuarioDTO.getNumeroTelefono());
 
+        // Busca el tipo de documento y estado
         TiposDocumentos tiposDocumentos = tiposDocumentosRepository.findById(usuarioDTO.getId_tipoDocumento())
-                        .orElseThrow(()-> new RuntimeException("No se encontro el tipo de documento"));
+                .orElseThrow(() -> new RuntimeException("No se encontró el tipo de documento"));
         usuarios.setTiposDocumentos(tiposDocumentos);
 
         Estados estados = estadosRepository.findById(usuarioDTO.getEstadoID())
-                        .orElseThrow(()-> new RuntimeException("No se encontro el estado"));
+                .orElseThrow(() -> new RuntimeException("No se encontró el estado"));
         usuarios.setEstados(estados);
 
+        // Actualiza la fecha de modificación
         usuarios.setFechaModificacion(LocalDateTime.now());
 
-
+        // Guarda el usuario actualizado en la base de datos
         usuarioRepository.save(usuarios);
     }
+
 
 
 }
