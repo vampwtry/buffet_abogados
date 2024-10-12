@@ -6,28 +6,28 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "tiposDocumento")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Roles {
+public class TiposDocumentos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idRol;
-
-    @Column(name = "nombre_rol")
-    private String nombreRol;
-
-
-    @OneToMany(mappedBy = "rol", cascade = {CascadeType.MERGE, CascadeType.PERSIST} , fetch = FetchType.LAZY)
-    private Set<Usuarios> usuarios = new HashSet<>();
+    private Long id_tipoDocumento;
+    private String nombre;
+    private String nomenclatura;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "estado_id")
     @JsonIgnore
     private Estados estados;
+
+    @OneToMany(mappedBy = "tiposDocumentos", cascade ={CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    private Set<Usuarios> usuarios = new HashSet<>();
+
 }

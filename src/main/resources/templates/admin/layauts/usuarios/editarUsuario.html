@@ -107,37 +107,76 @@
                             <li class="breadcrumb-item active">Usuarios</li>
                         </ol>
                         <div class="card mb-4">
+                            <div class="card-body">
+                                Recuerda que al crear un usuario debes estar seguro de asignar el rol correspondiente ya que el sistema podria ser vulnerado segun la
+                                <a target="_blank" href="https://datatables.net/">politica de seguridad</a>
+                                .
+                            </div>
+                            <br>
                             <div class="card-header d-flex justify-content-between ">
-                                <h5><i class="fas fa-table me-1"></i> Usuarios creados</h5>
-
-                                <a th:href="@{/usuarios/crear}" class="btn btn-primary">Nuevo usuario</a>
+                                <h5><i class="fas fa-table me-1"></i></h5>
+                                <a th:href="@{/admin/usuarios}" class="btn btn-secondary">Volver al listado de usuarios</a>
                             </div>
                             <div class="card-body">
-                                <table class="table text-center" id="usuarios-Json">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Nombres</th>
-                                            <th scope="col">Correo</th>
-                                            <th scope="col">Numero de contacto</th>
-                                            <th scope="col">Fecha de registro</th>
-                                            <th scope="col">Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr th:each="usr : ${usuarios}">
-                                            <th th:text="${usr.primerNombre + ' ' + usr.segundoNombre + ' ' + usr.primerApellido+ ' ' + usr.segundoApellido}"></th>
-                                            <th th:text="${usr.correo}"></th>
-                                            <th th:text="${usr.numeroTelefono}"></th>
-                                            <th th:text="${#temporals.format(usr.fechaRegistro, 'dd/MM/yyyy')}"></th>
-                                            <th>
-                                                <a class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
-                                                <a class="btn btn-warning" th:href="@{/usuarios/editar/{id}(id=${usr.id_user})}" ><i class="fa-solid fa-pen-to-square"></i></a>
-                                                <a class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
-                                            </th>
-                                        </tr>
-                                    </tbody>
+                                <form th:action="@{/usuarios/guardarEdicion}" th:object="${usuarios}" method="post">
+                                    <div class="row">
+                                        <input type="hidden" th:field="*{id_user}" />
+                                    </div>
 
-                                </table>
+                                    <div class="row">
+                                        <div class="col-md-3 mb-3">
+                                            <label for="primerNombre" class="form-label">Primer Nombre</label>
+                                            <input type="text" class="form-control" th:field="*{primerNombre}" id="primerNombre" placeholder="Ingrese el primer nombre">
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="segundoNombre" class="form-label">Segundo Nombre</label>
+                                            <input type="text" class="form-control" th:field="*{segundoNombre}" id="segundoNombre" placeholder="Ingrese el segundo nombre">
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="primerApellido" class="form-label">Primer Apellido</label>
+                                            <input type="text" class="form-control" th:field="*{primerApellido}" id="primerApellido" placeholder="Ingrese el primer apellido">
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="segundoApellido" class="form-label">Segundo Apellido</label>
+                                            <input type="text" class="form-control" th:field="*{segundoApellido}" id="segundoApellido" placeholder="Ingrese el segundo apellido">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <!-- Número de Documento -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="numeroDocumento" class="form-label">Número de Documento</label>
+                                            <input type="text" class="form-control" th:field="*{numeroDocumento}" id="numeroDocumento" placeholder="Ingrese el número de documento">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Tipo de documento del usuario</label>
+                                            <select th:field="*{id_tipoDocumento}" class="form-select" aria-label="Seleccione un tipo de documento">
+                                                <option th:each="tipDocs : ${tipDocs}" th:value="${tipDocs.id_tipoDocumento}" th:text="${tipDocs.nombre}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">Estado del usuario</label>
+                                            <select th:field="*{estadoID}" class="form-select" aria-label="Seleccione un tipo de documento">
+                                                <option th:each="e : ${estados}" th:value="${e.id_estado}" th:text="${e.nombreEstado}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="correo" class="form-label">correo</label>
+                                            <input type="email" class="form-control" th:field="*{correo}" id="correo" placeholder="Correo electronico">
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="numeroTelefono" class="form-label">Numero de telefono</label>
+                                            <input type="number" class="form-control" th:field="*{numeroTelefono}" id="numeroTelefono" placeholder="Numero de telefono">
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-secondary">Editar Usuario</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
