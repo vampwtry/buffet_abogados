@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Abogados S.A.S</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link rel="stylesheet" th:href="@{/css/admin/stylesDashBoard.css}">
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="index.html">Valbuen - Abogados</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#!">Configuración</a></li>
+                    <li><a class="dropdown-item" href="#!">Actividades</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li><a class="dropdown-item" href="#" onclick="document.getElementById('logout-form').submit();">Cerrar Sesión</a></li>
+                </ul>
+            </li>
+        </ul>
+        <form id="logout-form" th:action="@{/logout}" method="post" style="display: none;">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />  <!-- Protección CSRF -->
+        </form>
+    </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Inicio</div>
+                            <a class="nav-link" href="#">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Panel de reportes
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Maestros</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Gestion del usuario
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" th:href="@{/admin/usuarios}">Usuarios</a>
+                                    <a class="nav-link" href="#">Casos informales</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                Gestion de abogados
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Penales" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                        Penales
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="Penales" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="#">1</a>
+                                            <a class="nav-link" href="#">2</a>
+                                            <a class="nav-link" href="#">3</a>
+                                        </nav>
+                                    </div>
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#AbogadosFamilia" aria-expanded="false" aria-controls="pagesCollapseError">
+                                        Familia
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="AbogadosFamilia" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="#">1</a>
+                                            <a class="nav-link" href="#">2</a>
+                                            <a class="nav-link" href="#">3</a>
+                                        </nav>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="sb-sidenav-menu-heading">Aula de la firma</div>
+                            <a class="nav-link" href="#">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Cursos y Recursos
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Maestro de Usuarios</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Panel de reportes</a></li>
+                            <li class="breadcrumb-item active">Usuarios</li>
+                        </ol>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                Recuerda que al crear un usuario debes estar seguro de asignar el rol correspondiente ya que el sistema podria ser vulnerado segun la
+                                <a target="_blank" href="https://datatables.net/">politica de seguridad</a>
+                                .
+                            </div>
+                            <br>
+                            <div class="card-header d-flex justify-content-between ">
+                                <h5><i class="fas fa-table me-1"></i></h5>
+                                <a th:href="@{/admin/usuarios}" class="btn btn-secondary">Volver al listado de usuarios</a>
+                            </div>
+                            <div class="card-body">
+                                <form th:action="@{/usuarios/guardarEdicion}" th:object="${usuarios}" method="post">
+                                    <div class="row">
+                                        <input type="hidden" th:field="*{id_user}" />
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3 mb-3">
+                                            <label for="primerNombre" class="form-label">Primer Nombre</label>
+                                            <input type="text" class="form-control" th:field="*{primerNombre}" id="primerNombre" placeholder="Ingrese el primer nombre">
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="segundoNombre" class="form-label">Segundo Nombre</label>
+                                            <input type="text" class="form-control" th:field="*{segundoNombre}" id="segundoNombre" placeholder="Ingrese el segundo nombre">
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="primerApellido" class="form-label">Primer Apellido</label>
+                                            <input type="text" class="form-control" th:field="*{primerApellido}" id="primerApellido" placeholder="Ingrese el primer apellido">
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="segundoApellido" class="form-label">Segundo Apellido</label>
+                                            <input type="text" class="form-control" th:field="*{segundoApellido}" id="segundoApellido" placeholder="Ingrese el segundo apellido">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <!-- Número de Documento -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="numeroDocumento" class="form-label">Número de Documento</label>
+                                            <input type="text" class="form-control" th:field="*{numeroDocumento}" id="numeroDocumento" placeholder="Ingrese el número de documento">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Tipo de documento del usuario</label>
+                                            <select th:field="*{id_tipoDocumento}" class="form-select" aria-label="Seleccione un tipo de documento">
+                                                <option th:each="tipDocs : ${tipDocs}" th:value="${tipDocs.id_tipoDocumento}" th:text="${tipDocs.nombre}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">Estado del usuario</label>
+                                            <select th:field="*{estadoID}" class="form-select" aria-label="Seleccione un tipo de documento">
+                                                <option th:each="e : ${estados}" th:value="${e.id_estado}" th:text="${e.nombreEstado}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="correo" class="form-label">correo</label>
+                                            <input type="email" class="form-control" th:field="*{correo}" id="correo" placeholder="Correo electronico">
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="numeroTelefono" class="form-label">Numero de telefono</label>
+                                            <input type="number" class="form-control" th:field="*{numeroTelefono}" id="numeroTelefono" placeholder="Numero de telefono">
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-secondary">Editar Usuario</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Back-END</div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script th:src="@{/js/admin/scripts.js}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="js/datatables-simple-demo.js"></script>
+    </body>
+</html>
