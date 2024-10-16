@@ -22,5 +22,7 @@ public class UsuarioDTO {
     private Long rolID;
     private  Long estadoID;
     private Long id_tipoDocumento;
+    private String tipoDocumento;
+    private Long id_abogado;
 
 }

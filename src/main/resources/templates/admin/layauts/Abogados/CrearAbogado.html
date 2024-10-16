@@ -102,40 +102,39 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Maestro de Usuarios</h1>
+                        <h1 class="mt-4">Maestro de Abogados</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a th:href="@{/admin}">Panel de reportes</a></li>
-                            <li class="breadcrumb-item active">Usuarios</li>
+                            <li class="breadcrumb-item active">Abogados</li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-header d-flex justify-content-between ">
-                                <h5><i class="fas fa-table me-1"></i> Usuarios creados</h5>
+                                <h5><i class="fas fa-table me-1"></i> Recursos disponibles para asignar rol de abogado</h5>
 
-                                <a th:href="@{/usuarios/crear}" class="btn btn-primary">Nuevo usuario</a>
+                                <a th:href="@{/admin/abogados}" class="btn btn-primary">Volver al listado de abogados</a>
                             </div>
                             <div class="card-body">
                                 <table class="table text-center" id="usuarios-Json">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Nombres</th>
-                                            <th scope="col">Correo</th>
-                                            <th scope="col">Numero de contacto</th>
-                                            <th scope="col">Fecha de registro</th>
+                                            <th scope="col">Nombre del usuario</th>
+                                            <th scope="col">Tipo de Documento</th>
+                                            <th scope="col">Numero de documentol</th>
+                                            <th scope="col">Fecha de Creacion</th>
                                             <th scope="col">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="usr : ${usuarios}">
-                                            <th th:text="${usr.primerNombre + ' ' + usr.segundoNombre + ' ' + usr.primerApellido+ ' ' + usr.segundoApellido}"></th>
-                                            <th th:text="${usr.correo}"></th>
-                                            <th th:text="${usr.numeroTelefono}"></th>
-                                            <th th:text="${#temporals.format(usr.fechaRegistro, 'dd/MM/yyyy')}"></th>
-                                            <th>
-                                                <a class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
-                                                <a class="btn btn-warning" th:href="@{/usuarios/editar/{id}(id=${usr.id_user})}" ><i class="fa-solid fa-pen-to-square"></i></a>
-                                                <a class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
-                                            </th>
-                                        </tr>
+                                    <tr th:each="usr : ${usuarios}">
+                                        <th th:text="${usr.primerNombre + ' ' + usr.segundoNombre + ' ' + usr.primerApellido+ ' ' + usr.segundoApellido}"></th>
+                                        <th th:text="${usr.tipoDocumento}"></th>
+                                        <th th:text="${usr.numeroDocumento}"></th>
+                                        <th th:text="${#temporals.format(usr.fechaRegistro, 'dd/MM/yyyy')}"></th>
+                                        <th>
+                                            <a class="btn btn-info" th:href="@{/abogados/agregar/{id}(id=${usr.id_user})}"><i class="fa-solid fa-person-circle-plus"></i></a>
+                                            <a class="btn btn-warning" th:href="@{/usuarios/editar/{id}(id=${usr.id_user})}" ><i class="fa-solid fa-pen-to-square"></i></a>
+                                        </th>
+                                    </tr>
                                     </tbody>
 
                                 </table>

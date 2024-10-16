@@ -81,8 +81,10 @@ public class UsuarioService {
 
         ){
             usuarioDTO.setId_tipoDocumento(usuarios.getTiposDocumentos().getId_tipoDocumento());
+            usuarioDTO.setTipoDocumento(usuarios.getTiposDocumentos().getNombre());
         }else{
             usuarioDTO.setId_tipoDocumento(null);
+            usuarioDTO.setTipoDocumento(null);
         }
         if (
                 usuarios.getEstados()!=null
@@ -133,6 +135,15 @@ public class UsuarioService {
         // Guarda el usuario actualizado en la base de datos
         usuarioRepository.save(usuarios);
     }
+
+    public List<UsuarioDTO> obtenerUsers(String rolNombre){
+        List<Usuarios> usuarios = usuarioRepository.findByRol_NombreRol(rolNombre);
+        return usuarios.stream()
+                .map(this::transformarDTO)
+                .collect(Collectors.toList());
+    }
+
+
 
 
 

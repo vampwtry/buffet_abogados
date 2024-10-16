@@ -47,6 +47,8 @@ public class Usuarios {
     @JsonIgnore
     private TiposDocumentos tiposDocumentos;
 
+    @OneToOne(mappedBy = "user")
+    private Abogados abogados;
 
 
 }
