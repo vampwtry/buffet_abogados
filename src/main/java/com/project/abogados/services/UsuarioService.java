@@ -48,6 +48,7 @@ public class UsuarioService {
         TiposDocumentos tiposDocumentos = tiposDocumentosRepository.findById(usuarioDTO.getId_tipoDocumento())
                 .orElseThrow(() -> new RuntimeException("Tipo de documento no encontrado"));
         nuevoUsuario.setTiposDocumentos(tiposDocumentos);
+
         Roles rol = rolRepository.findByNombreRol("ROLE_USER")
                 .orElseThrow(()-> new RuntimeException("Rol no encontrado"));
         nuevoUsuario.setRol(rol);
@@ -63,6 +64,10 @@ public class UsuarioService {
     public List<UsuarioDTO> listUsuarios(){
         List<Usuarios> usuarios = usuarioRepository.findAll();
         return usuarios.stream().map(this::transformarDTO).collect(Collectors.toList());
+    }
+
+    public Long countUsuarios(){
+        return usuarioRepository.count();
     }
 
     private UsuarioDTO transformarDTO(Usuarios usuarios){

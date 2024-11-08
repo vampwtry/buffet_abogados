@@ -1,6 +1,7 @@
 package com.project.abogados.controller;
 
 
+import com.project.abogados.dtos.TiposDocumentosDTO;
 import com.project.abogados.dtos.UsuarioDTO;
 import com.project.abogados.model.Estados;
 import com.project.abogados.model.Roles;
@@ -38,7 +39,7 @@ public class usuarioController {
         model.addAttribute("usuario", usuarioDTO);
             List<Roles> roles = rolService.listaRoles();
             model.addAttribute("roles",roles);
-            List<TiposDocumentos> tiposDocumentos = tiposDocumentosService.listTiposDocumentos();
+            List<TiposDocumentosDTO> tiposDocumentos = tiposDocumentosService.listTiposDocumentos();
             model.addAttribute("tiposDocumentos", tiposDocumentos);
         return "admin/layauts/usuarios/crearUsuario";
     }
@@ -46,7 +47,7 @@ public class usuarioController {
     @PostMapping("/guardar")
     public String guardarUsuario(@ModelAttribute("usuario") UsuarioDTO usuarioDTO, BindingResult result, Model model){
         if (result.hasErrors()){
-                List<TiposDocumentos> tiposDocumentos = tiposDocumentosService.listTiposDocumentos();
+                List<TiposDocumentosDTO> tiposDocumentos = tiposDocumentosService.listTiposDocumentos();
                 model.addAttribute("tiposDocumentos",tiposDocumentos);
             return "admin/layauts/usuarios/crearUsuario?error";
         }
@@ -57,7 +58,7 @@ public class usuarioController {
     @GetMapping("/editar/{id}")
     public String formularioEdicion(@PathVariable("id") Long id,Model model){
         UsuarioDTO usuarioDTO = usuarioService.obtenerUsuarioId(id);
-        List<TiposDocumentos> tiposDocumentos = tiposDocumentosService.listTiposDocumentos();
+        List<TiposDocumentosDTO> tiposDocumentos = tiposDocumentosService.listTiposDocumentos();
         List<Estados> estados = estadosService.lsitEstados();
         model.addAttribute("usuarios", usuarioDTO);
         model.addAttribute("tipDocs",tiposDocumentos);
@@ -68,7 +69,7 @@ public class usuarioController {
     @PostMapping("/guardarEdicion")
     public String guardarUsuarioEditado(@ModelAttribute("usuarios") UsuarioDTO usuarioDTO , BindingResult result, Model model){
         if (result.hasErrors()){
-            List<TiposDocumentos> tiposDocumentos = tiposDocumentosService.listTiposDocumentos();
+            List<TiposDocumentosDTO> tiposDocumentos = tiposDocumentosService.listTiposDocumentos();
             List<Estados> estados = estadosService.lsitEstados();
             model.addAttribute("tipDocs", tiposDocumentos);
             model.addAttribute("estados",estados);

@@ -12,30 +12,30 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">Valbuen - Abogados</a>
-            <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            </form>
-            <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Configuración</a></li>
-                        <li><a class="dropdown-item" href="#!">Actividades</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#" onclick="document.getElementById('logout-form').submit();">Cerrar Sesión</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <form id="logout-form" th:action="@{/logout}" method="post" style="display: none;">
-                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />  <!-- Protección CSRF -->
-            </form>
-        </nav>
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="index.html">Valbuen - Abogados</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#!">Configuración</a></li>
+                    <li><a class="dropdown-item" href="#!">Actividades</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li><a class="dropdown-item" href="#" onclick="document.getElementById('logout-form').submit();">Cerrar Sesión</a></li>
+                </ul>
+            </li>
+        </ul>
+        <form id="logout-form" th:action="@{/logout}" method="post" style="display: none;">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />  <!-- Protección CSRF -->
+        </form>
+    </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -113,71 +113,41 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Reporteria</h1>
+                        <h1 class="mt-4">Lista de Documentos de Identificacion</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Reporteria de tablas maestras</li>
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Panel de reportes</a></li>
+                            <li class="breadcrumb-item active">Tipos de Documentos</li>
                         </ol>
-                        <div class="row">
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-primary text-white mb-4">
-                                    <!-- Contenedor con flex para alinear horizontalmente -->
-                                    <div class="card-body d-flex justify-content-between align-items-center">
-                                        <span>Usuarios Registrados</span>
-                                        <strong th:text="${conteoUsers}">" 0 "</strong>
-                                    </div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" th:href="@{/admin/usuarios}">Ver Detalles</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between ">
+                                <h5><i class="fas fa-table me-1"></i> Documentos creados</h5>
 
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body">Casos informales sin revisar</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">Ver Detalles</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
+                                <a th:href="@{/usuarios/crear}" class="btn btn-primary">Nuevo Tipo de Identificacion</a>
                             </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-success text-white mb-4">
-                                    <div class="card-body">Abogados sin casos</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">Ver Detalles</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body">Casos prontos a vencer</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">Ver Detalles</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-area me-1"></i>
-                                        Reporte 1
-                                    </div>
-                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
-                                </div>
-                            </div>
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-bar me-1"></i>
-                                        Reporte 2
-                                    </div>
-                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
-                                </div>
+                            <div class="card-body">
+                                <table class="table text-center" id="usuarios-Json">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">Nomenclatura</th>
+                                            <th scope="col">Estado</th>
+                                            <th scope="col">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="d : ${tipDocs}">
+                                            <th th:text="${d.nombre}"></th>
+                                            <th th:text="${d.nomenclatura}"></th>
+                                            <th th:text="${d.estado}"></th>
+                                            <th>
+                                                <a class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
+                                                <a class="btn btn-warning" th:href="@{/usuarios/editar/{id}(id=${usr.id_user})}" ><i class="fa-solid fa-pen-to-square"></i></a>
+                                                <a class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                            </th>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -193,8 +163,7 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script th:src="@{/js/admin/scripts.js}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script th:src="@{/js/admin/datatables-simple-demo.js}"></script>
+        <script src="js/datatables-simple-demo.js"></script>
     </body>
 </html>

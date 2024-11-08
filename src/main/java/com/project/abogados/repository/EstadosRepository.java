@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface EstadosRepository extends JpaRepository<Estados,Long> {
     Optional<Estados> findByNombreEstado(String nombreEstado);
+
 }
