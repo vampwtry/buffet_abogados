@@ -34,7 +34,7 @@ public class AdminController {
 
     @GetMapping("/admin/abogados")
     public String listAbogados(Model model){
-        List<Abogados> abogados = abogadosService.listAbogados();
+        List<AbogadosDTO> abogados = abogadosService.listAbogados();
         model.addAttribute("abogados",abogados);
         return "admin/layauts/abogados";
     }

@@ -78,7 +78,6 @@ public class UsuarioService {
         usuarioDTO.setEstadoID(usuarios.getEstados().getId_estado());
         if (
                 usuarios.getTiposDocumentos()!=null
-
         ){
             usuarioDTO.setId_tipoDocumento(usuarios.getTiposDocumentos().getId_tipoDocumento());
             usuarioDTO.setTipoDocumento(usuarios.getTiposDocumentos().getNombre());
@@ -88,7 +87,6 @@ public class UsuarioService {
         }
         if (
                 usuarios.getEstados()!=null
-
         ){
             usuarioDTO.setEstadoID(usuarios.getEstados().getId_estado());
         }else{
@@ -110,7 +108,6 @@ public class UsuarioService {
         // Busca el usuario en la base de datos
         Usuarios usuarios = usuarioRepository.findById(usuarioDTO.getId_user())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
         // Actualiza los campos del objeto Usuarios con los valores del DTO
         usuarios.setPrimerNombre(usuarioDTO.getPrimerNombre());
         usuarios.setSegundoNombre(usuarioDTO.getSegundoNombre());
@@ -119,19 +116,15 @@ public class UsuarioService {
         usuarios.setCorreo(usuarioDTO.getCorreo());
         usuarios.setNumeroDocumento(usuarioDTO.getNumeroDocumento());
         usuarios.setNumeroTelefono(usuarioDTO.getNumeroTelefono());
-
         // Busca el tipo de documento y estado
         TiposDocumentos tiposDocumentos = tiposDocumentosRepository.findById(usuarioDTO.getId_tipoDocumento())
                 .orElseThrow(() -> new RuntimeException("No se encontró el tipo de documento"));
         usuarios.setTiposDocumentos(tiposDocumentos);
-
         Estados estados = estadosRepository.findById(usuarioDTO.getEstadoID())
                 .orElseThrow(() -> new RuntimeException("No se encontró el estado"));
         usuarios.setEstados(estados);
-
         // Actualiza la fecha de modificación
         usuarios.setFechaModificacion(LocalDateTime.now());
-
         // Guarda el usuario actualizado en la base de datos
         usuarioRepository.save(usuarios);
     }
@@ -141,6 +134,15 @@ public class UsuarioService {
         return usuarios.stream()
                 .map(this::transformarDTO)
                 .collect(Collectors.toList());
+    }
+    public void actualizarRolUsuario(UsuarioDTO usuarioDTO) {
+        // Obtener la entidad de usuario, actualizar y guardar
+        Usuarios usuario = usuarioRepository.findById(usuarioDTO.getId_user())
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + usuarioDTO.getId_user()));
+
+        // Actualizar el rol del usuario
+        usuario.setRol(new Roles(usuarioDTO.getRolID()));
+        usuarioRepository.save(usuario);
     }
 
 

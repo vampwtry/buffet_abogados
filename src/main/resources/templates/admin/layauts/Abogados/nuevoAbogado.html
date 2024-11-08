@@ -102,7 +102,7 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Maestro de Abogados</h1>
+                        <h1 class="mt-4">Lista de Abogados</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a th:href="@{/admin}">Panel de reportes</a></li>
                             <li class="breadcrumb-item active">Abogados</li>
@@ -118,19 +118,22 @@
                                     <p><strong>ID:</strong><span th:text=" ${usuario.id_user + ' ' + usuario.primerNombre +' '+ usuario.primerApellido}"></span></p>
                                 </div>
                                 <div class="row">
-                                    <form>
+                                    <form th:action="@{/abogados/guardar}" th:object="${abogado}" method="post">
                                         <div class="mb-3">
-                                            <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                                            <input type="hidden" th:value="${usuario.id_user}" id="id_user" th:field="*{id_user}">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="exampleInputPassword1" class="form-label">Password</label>
-                                            <input type="password" class="form-control" id="exampleInputPassword1">
+                                            <label for="especialidad" class="form-label">Especialidad</label>
+                                            <input th:field="*{especialidad}" type="text" class="form-control" id="especialidad">
+                                            <div id="emailHelp" class="form-text">Especialidad en la cual se especialza .</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="tarjetaProfesional" class="form-label">Tarjeta profesional</label>
+                                            <input th:field="*{tarjetaProfesional}" type="text" class="form-control" id="tarjetaProfesional">
                                         </div>
                                         <div class="mb-3 ">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option selected></option>
+                                            <select th:field="*{id_tipoAbogado}" class="form-select" aria-label="Default select example">
+                                                <option th:each="t : ${tipAbogados}" th:value="${t.id_tipoAbogado}" th:text="${t.nombre}"></option>
                                             </select>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Submit</button>

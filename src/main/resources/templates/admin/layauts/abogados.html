@@ -102,7 +102,7 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Maestro de Abogados</h1>
+                        <h1 class="mt-4">Lista de Abogados</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a th:href="@{/admin}">Panel de reportes</a></li>
                             <li class="breadcrumb-item active">Abogados</li>
@@ -114,7 +114,7 @@
                                 <a th:href="@{/abogados/Disponibles}" class="btn btn-primary">Nuevo abogado</a>
                             </div>
                             <div class="card-body">
-                                <table class="table text-center" id="usuarios-Json">
+                                <table class="table text-center">
                                     <thead>
                                         <tr>
                                             <th scope="col">Usuario</th>
@@ -125,8 +125,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
-
+                                    <tr th:each="a : ${abogados}">
+                                        <th th:text="${a.id_user + ': ' + a.primerNombreUsuario + ' ' + a.primerApellidoUsuario}"></th>
+                                        <th th:text="${a.especialidad}"></th>
+                                        <th th:text="${a.tarjetaProfesional}"></th>
+                                        <th th:text="${a.tipoAbogado}"></th>
+                                        <th>
+                                            <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#usuarioModal" th:href="@{/abogados/detalle/{id}(id=${a.id_abogado})}"><i class="fa-solid fa-eye"></i></a>
+                                            <a class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                                            <a class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                        </th>
+                                    </tr>
                                     </tbody>
 
                                 </table>
@@ -143,6 +152,94 @@
                 </footer>
             </div>
         </div>
+        <!-- Modal de vista de usuario -->
+    <!-- Bootstrap Modal -->
+    <div class="modal fade" id="usuarioModal" tabindex="-1" aria-labelledby="usuarioModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="usuarioModalLabel">Detalle del Abogado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="id_user"><strong>Nombres del Abogado</strong></label>
+                            <label id="id_user" class="form-control" th:text="${abogado.primerNombre} + ' ' + ${abogado.primerApellido}" ></label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="primerNombre"><strong>Primer Nombre:</strong></label>
+                            <label id="primerNombre" class="form-control" ></label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="segundoNombre"><strong>Segundo Nombre:</strong></label>
+                            <label id="segundoNombre" class="form-control" ></label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="primerApellido"><strong>Primer Apellido:</strong></label>
+                            <label id="primerApellido" class="form-control" ></label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="segundoApellido"><strong>Segundo Apellido:</strong></label>
+                            <label id="segundoApellido" class="form-control" ></label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="fechaRegistro"><strong>Fecha de Registro:</strong></label>
+                            <label id="fechaRegistro" class="form-control" ></label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="fechaModificacion"><strong>Fecha de Modificación:</strong></label>
+                            <label id="fechaModificacion" class="form-control" ></label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="numeroTelefono"><strong>Número de Teléfono:</strong></label>
+                            <label id="numeroTelefono" class="form-control" ></label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="numeroDocumento"><strong>Número de Documento:</strong></label>
+                            <label id="numeroDocumento" class="form-control" ></label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="correo"><strong>Correo Electrónico:</strong></label>
+                            <label id="correo" class="form-control" ></label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="rolID"><strong>Rol:</strong></label>
+                            <label id="rolID" class="form-control" ></label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="estadoID"><strong>Estado:</strong></label>
+                            <label id="estadoID" class="form-control" ></label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_tipoDocumento"><strong>Tipo de Documento:</strong></label>
+                            <label id="id_tipoDocumento" class="form-control" ></label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_abogado"><strong>ID Abogado:</strong></label>
+                            <label id="id_abogado" class="form-control"></label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script th:src="@{/js/admin/scripts.js}"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>

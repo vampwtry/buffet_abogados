@@ -22,5 +22,7 @@ public class TiposAbogados {
     @OneToMany(mappedBy = "tiposAbogados", cascade = {CascadeType.MERGE, CascadeType.PERSIST},fetch = FetchType.LAZY)
     private Set<Abogados> abogados = new HashSet<>();
 
+    @OneToMany(mappedBy = "tiposAbogados", cascade ={CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    private Set<CasosInformales> casosInformales = new HashSet<>();
 
 }

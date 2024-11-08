@@ -30,4 +30,9 @@ public class Roles {
     @JoinColumn(name = "estado_id")
     @JsonIgnore
     private Estados estados;
+
+    // Constructor que acepta solo el ID
+    public Roles(Long id) {
+        this.idRol = id;
+    }
 }
