@@ -122,7 +122,7 @@
                             <div class="card-header d-flex justify-content-between ">
                                 <h5><i class="fas fa-table me-1"></i> Documentos creados</h5>
 
-                                <a th:href="@{/usuarios/crear}" class="btn btn-primary">Nuevo Tipo de Identificacion</a>
+                                <a th:href="@{/ParamSystem/NuevoTipDoc}" class="btn btn-primary">Nuevo Tipo de Identificacion</a>
                             </div>
                             <div class="card-body">
                                 <table class="table text-center" id="usuarios-Json">
@@ -140,8 +140,7 @@
                                             <th th:text="${d.nomenclatura}"></th>
                                             <th th:text="${d.estado}"></th>
                                             <th>
-                                                <a class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
-                                                <a class="btn btn-warning" th:href="@{/usuarios/editar/{id}(id=${usr.id_user})}" ><i class="fa-solid fa-pen-to-square"></i></a>
+                                                <a class="btn btn-warning" th:href="@{/ParamSystem/EditarTipDoc/{id}(id=${d.id})}" ><i class="fa-solid fa-pen-to-square"></i></a>
                                                 <a class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
                                             </th>
                                         </tr>

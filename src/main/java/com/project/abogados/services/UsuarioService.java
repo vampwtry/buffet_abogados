@@ -44,6 +44,7 @@ public class UsuarioService {
         nuevoUsuario.setCorreo(usuarioDTO.getCorreo());
         nuevoUsuario.setNumeroTelefono(usuarioDTO.getNumeroTelefono());
         nuevoUsuario.setContraseña(passwordEncoder.encode(usuarioDTO.getContraseña()));
+        nuevoUsuario.setMsjBienvenida(false);
 
         TiposDocumentos tiposDocumentos = tiposDocumentosRepository.findById(usuarioDTO.getId_tipoDocumento())
                 .orElseThrow(() -> new RuntimeException("Tipo de documento no encontrado"));
@@ -81,6 +82,7 @@ public class UsuarioService {
         usuarioDTO.setNumeroTelefono(usuarios.getNumeroTelefono());
         usuarioDTO.setFechaRegistro(usuarios.getFechaRegistro());
         usuarioDTO.setEstadoID(usuarios.getEstados().getId_estado());
+        usuarioDTO.setMsjBienvenida(usuarios.getMsjBienvenida());
         if (
                 usuarios.getTiposDocumentos()!=null
         ){

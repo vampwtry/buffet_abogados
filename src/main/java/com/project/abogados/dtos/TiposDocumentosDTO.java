@@ -9,4 +9,5 @@ public class TiposDocumentosDTO {
     private String nombre;
     private String nomenclatura;
     private String estado;
+    private Long id_Estado;
 }

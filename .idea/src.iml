@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_17">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_X">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -54,13 +54,6 @@
     <orderEntry type="library" name="Maven: org.attoparser:attoparser:2.0.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.unbescape:unbescape:1.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-web:3.3.4" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-json:3.3.4" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.17.2" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.17.2" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.17.2" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.17.2" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.17.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-web:6.1.13" level="project" />
     <orderEntry type="library" name="Maven: io.micrometer:micrometer-observation:1.13.4" level="project" />
     <orderEntry type="library" name="Maven: io.micrometer:micrometer-commons:1.13.4" level="project" />
@@ -112,5 +105,12 @@
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:6.3.3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-crypto:6.3.3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:6.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-json:3.3.4" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.17.2" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.17.2" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.17.2" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.17.2" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.17.2" level="project" />
   </component>
 </module>

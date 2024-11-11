@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -26,7 +27,7 @@ public class SecurityConfig {
                 )
 
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/guardarCasoInformal")
+                        .ignoringRequestMatchers("/api/send-email")
                 )
 
                 .formLogin(form -> form
@@ -74,5 +75,12 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/**") // Ajusta la ruta según tus necesidades
+                .allowedOrigins("http://localhost:8080") // Ajusta el dominio permitido
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*");
     }
 }

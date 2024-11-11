@@ -102,52 +102,47 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Lista de Usuarios</h1>
+                        <h1 class="mt-4">Editar un tipo de documento</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a th:href="@{/admin}">Panel de reportes</a></li>
-                            <li class="breadcrumb-item active">Usuarios</li>
+                            <li class="breadcrumb-item active">tipos de documentos</li>
                         </ol>
                         <div class="card mb-4">
+                            <div class="card-body">
+                                Para editar nuevo registro debes conocer nuestra
+                                <a target="_blank" href="https://datatables.net/">politica de seguridad</a>
+                                .
+                            </div>
+                            <br>
                             <div class="card-header d-flex justify-content-between ">
-                                <h5><i class="fas fa-table me-1"></i> Usuarios creados</h5>
-
-                                <a th:href="@{/usuarios/crear}" class="btn btn-primary">Nuevo usuario</a>
+                                <h5><i class="fas fa-table me-1"></i></h5>
+                                <a th:href="@{/admin/tiposDocs}" class="btn btn-secondary">Volver al listado de tipo de documentos</a>
                             </div>
                             <div class="card-body">
-                                <table class="table text-center" id="usuarios-Json">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Nombres</th>
-                                            <th scope="col">Correo</th>
-                                            <th scope="col">Numero de contacto</th>
-                                            <th scope="col">Fecha de registro</th>
-                                            <th scope="col">Flows</th>
-                                            <th scope="col">Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr th:each="usr : ${usuarios}">
-                                            <th th:text="${usr.primerNombre + ' ' + usr.segundoNombre + ' ' + usr.primerApellido+ ' ' + usr.segundoApellido}"></th>
-                                            <th th:text="${usr.correo}"></th>
-                                            <th th:text="${usr.numeroTelefono}"></th>
-                                            <th th:text="${#temporals.format(usr.fechaRegistro, 'dd/MM/yyyy')}"></th>
-                                            <th>
-                                                <a href="#"
-                                                   class="btn btn-primary"
-                                                   th:attr="data-email=${usr.correo}, disabled=${usr.msjBienvenida ? null : 'disabled'}"
-                                                   onclick="sendEmail(this)">
-                                                    <i class="fa-solid fa-envelope-open-text"></i>
-                                                </a>
-                                            </th>
-                                            <th>
-                                                <a class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
-                                                <a class="btn btn-warning" th:href="@{/usuarios/editar/{id}(id=${usr.id_user})}" ><i class="fa-solid fa-pen-to-square"></i></a>
-                                                <a class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
-                                            </th>
-                                        </tr>
-                                    </tbody>
-
-                                </table>
+                                <form th:action="@{/ParamSystem/guardarEdicion}" th:object="${TipDocs}" method="post">
+                                    <div class="row">
+                                        <input type="hidden" th:field="*{id}" />
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">Nombre del Tipo de Documento</label>
+                                            <input type="text" class="form-control" th:field="*{nombre}"  placeholder="Nombre del tipo de documento">
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="segundoNombre" class="form-label">Nomenclatura</label>
+                                            <input type="text" class="form-control" th:field="*{nomenclatura}" id="segundoNombre" placeholder="Ejemplo CC, TI, PA">
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">Estado del registro</label>
+                                            <select th:field="*{id_Estado}" class="form-select" aria-label="Seleccione un estado">
+                                                <option th:each="e : ${estados}" th:value="${e.id_estado}" th:text="${e.nombreEstado}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-secondary">Editar Tipo</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -165,41 +160,5 @@
         <script th:src="@{/js/admin/scripts.js}"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
-    <script>
-        function sendEmail(element) {
-    const email = element.getAttribute('data-email');
-    console.log('Email obtenido:', email); // Log para depuración
-
-    if (email) {
-        fetch('/api/send-email', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email: email })
-        })
-        .then(response => {
-            if (response.ok) {
-                console.log('Solicitud enviada con éxito');
-                return response.text();
-            } else {
-                console.error('Error en la respuesta del servidor:', response.status);
-                throw new Error('No se pudo enviar el correo. Intenta nuevamente.');
-            }
-        })
-        .then(data => {
-            alert('Respuesta del servidor: ' + data); // Mensaje exitoso
-        })
-        .catch(error => {
-            console.error('Error al enviar:', error.message);
-            alert('Error: ' + error.message);
-        });
-    } else {
-        alert('No se pudo obtener el correo.');
-    }
-}
-
-    </script>
-
     </body>
 </html>

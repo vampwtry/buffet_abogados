@@ -26,6 +26,7 @@ public class Usuarios {
     private String segundoApellido;
     private LocalDateTime fechaRegistro;
     private LocalDateTime fechaModificacion;
+    private Boolean msjBienvenida;
     private int numeroTelefono;
     private int numeroDocumento;
     private String correo;

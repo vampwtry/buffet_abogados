@@ -43,8 +43,26 @@ public class TiposDocumentosService {
         TiposDocumentos documentos = new TiposDocumentos();
         documentos.setNombre(documentosDTO.getNombre());
         documentos.setNomenclatura(documentosDTO.getNomenclatura());
-        Estados estados = estadosRepository.findByNombreEstado(documentosDTO.getEstado())
+        Estados estados = estadosRepository.findByNombreEstado("ACTIVO")
                 .orElseThrow(()-> new RuntimeException("Estado no encontrado"));
+        documentos.setEstados(estados);
+        tiposDocumentosRepository.save(documentos);
+    }
+
+    public TiposDocumentosDTO obtenerTipDocID(Long id){
+        TiposDocumentos documentos = tiposDocumentosRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("No se encontro el ID de ese registro"));
+        TiposDocumentosDTO documentosDTO = transformarDTO(documentos);
+        return documentosDTO;
+    }
+
+    public void actualizarTipDocs(TiposDocumentosDTO documentosDTO){
+        TiposDocumentos documentos = tiposDocumentosRepository.findById(documentosDTO.getId())
+                .orElseThrow(()-> new RuntimeException("El tipDoc no fue encontrado"));
+        documentos.setNombre(documentosDTO.getNombre());
+        documentos.setNomenclatura(documentos.getNomenclatura());
+        Estados estados = estadosRepository.findById(documentosDTO.getId_Estado())
+                .orElseThrow(()-> new RuntimeException("No se encontro el estado"));
         documentos.setEstados(estados);
         tiposDocumentosRepository.save(documentos);
     }

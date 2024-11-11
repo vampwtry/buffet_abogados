@@ -24,5 +24,6 @@ public class UsuarioDTO {
     private Long id_tipoDocumento;
     private String tipoDocumento;
     private Long id_abogado;
+    private Boolean msjBienvenida;
 
 }
