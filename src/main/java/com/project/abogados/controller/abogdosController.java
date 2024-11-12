@@ -92,10 +92,10 @@ public class abogdosController {
         }
 
         try {
-            // Guardar el abogado en la base de datos
+
             AbogadosDTO abogadoGuardado = abogadosService.crearAbogado(abogadosDTO);
 
-            // Asignar rol al usuario
+
             UsuarioDTO usuarioDTO = usuarioService.obtenerUsuarioId(abogadosDTO.getId_user());
             Optional<Roles> rolAbogado = rolRepository.findByNombreRol("ROLE_ABOGADO");
 
@@ -108,13 +108,13 @@ public class abogdosController {
             }
 
             // Preparar datos para enviar a Power Automate
-            String fechaActual = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
+            String fechaActual = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE);
             String numeroDoc = String.valueOf(abogadoGuardado.getNumDoc());
 
             callPowerAutomateApi(
-                    abogadoGuardado.getTipoAbogado(), // Ajusta según los campos de tu DTO
+                    abogadoGuardado.getTipoAbogado(),
                     numeroDoc,
-                    fechaActual,
+                    abogadoGuardado.getTarjetaProfesional(),
                     "DocumentAbogado",
                     documento
             );
@@ -143,23 +143,25 @@ public class abogdosController {
 
 
     public void callPowerAutomateApi(String fullName, String email, String fecha, String tipoEjecucion, MultipartFile documento) throws Exception {
-        // URL de la API
         String url = "https://prod-115.westus.logic.azure.com:443/workflows/7c1cbb422a934ee5ab3c07121b133011/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=C5v8bY9MdF1xz1Eqloz38JyXwZ-b9majL3PuotIf7n4";
 
-        // Crear JSON dinámico
+        // Validar y construir datos
         Map<String, String> datos = new HashMap<>();
-        datos.put("fullName", fullName);
-        datos.put("email", email);
-        datos.put("fecha", fecha);
-        datos.put("tipoEjecucion", tipoEjecucion);
+        datos.put("fullName", fullName != null ? fullName : "");
+        datos.put("email", email != null ? email : "");
+        datos.put("fecha", fecha != null ? fecha : "");
+        datos.put("tipoEjecucion", tipoEjecucion != null ? tipoEjecucion : "");
 
-        // Incluir el documento en Base64, si existe
         if (documento != null && !documento.isEmpty()) {
             byte[] bytes = documento.getBytes();
             String base64Documento = Base64.getEncoder().encodeToString(bytes);
             datos.put("nombreArchivo", documento.getOriginalFilename());
             datos.put("tipoArchivo", documento.getContentType());
             datos.put("contenidoBase64", base64Documento);
+        } else {
+            datos.put("nombreArchivo", "");
+            datos.put("tipoArchivo", "");
+            datos.put("contenidoBase64", "");
         }
 
         // Convertir datos a JSON
@@ -177,10 +179,11 @@ public class abogdosController {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         // Validar respuesta
-        if (response.statusCode() != 200) {
+        if (response.statusCode() != 202) {
             throw new Exception("Error al enviar los datos a Power Automate: " + response.body());
         }
     }
+
 
 
 }
