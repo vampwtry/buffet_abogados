@@ -24,7 +24,6 @@ public class CasosInformales {
     private int telefono;
     private String descripcion;
     private LocalDateTime fechaRegistro;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipoAbogados_id")
     @JsonIgnore

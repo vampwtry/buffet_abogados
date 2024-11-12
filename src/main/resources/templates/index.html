@@ -31,7 +31,7 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#portfolio">SERVICIOS</a></li>
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about">NOSOTROS</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">CONTACTANOS</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:href="@{/CasoInformal}">CONTACTANOS</a></li>
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:href="@{/login}" >INICIA SESIÓN</a></li>
             </ul>
         </div>
@@ -147,60 +147,7 @@
         </div>
     </div>
 </section>
-<!-- Contact Section-->
-<section class="page-section" id="contact">
-    <div class="container">
-        <!-- Contact Section Heading-->
-        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Ponte en contacto</h2>
-        <!-- Icon Divider-->
-        <div class="divider-custom">
-            <div class="divider-custom-line"></div>
-            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-            <div class="divider-custom-line"></div>
-        </div>
-        <!-- Contact Section Form-->
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-xl-7">
-                <form id="contactForm" data-sb-form-api-token="API_TOKEN"  >
-                    <div class="form-floating mb-3">
-                        <input class="form-control"  id="nombresCompletos" type="text" placeholder="Ingrese su nombre completo" data-sb-validations="required" />
-                        <label for="nombresCompletos">Nombre completo</label>
-                        <div class="invalid-feedback" data-sb-feedback="name:required">El nombre es requerido</div>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input class="form-control"  id="correo" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
-                        <label for="correo">Correo personal</label>
-                        <div class="invalid-feedback" data-sb-feedback="email:required">El correo es requerido</div>
-                        <div class="invalid-feedback" data-sb-feedback="email:email">El correo no es valido</div>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input class="form-control"  id="telefono" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
-                        <label for="telefono">Numero de telefono</label>
-                        <div class="invalid-feedback" data-sb-feedback="phone:required">El numero es requerido</div>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <select class="form-select"  aria-label="Seleccione un tipo de documento">
-                            <option th:each="ta : ${tiposAbogados}" th:value="${ta.id_tipoAbogado}" th:text="${ta.nombre}"></option>
-                        </select>
-                    </div>
-                    <!-- Message input-->
-                    <div class="form-floating mb-3">
-                        <textarea class="form-control"   id="descripcion" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
-                        <label for="descripcion">Mensaje detallado del caso</label>
-                        <div class="invalid-feedback" data-sb-feedback="message:required">El mensaje es requerido</div>
-                    </div>
-                    <div class="d-none" id="submitSuccessMessage">
-                        <div class="text-center mb-3">
-                            <div class="fw-bolder">Formulario enviado correctamente!</div>
-                        </div>
-                    </div>
-                    <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
-                    <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Enviar formulario</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
+
 <!-- Footer-->
 <footer class="footer text-center">
     <div class="container">

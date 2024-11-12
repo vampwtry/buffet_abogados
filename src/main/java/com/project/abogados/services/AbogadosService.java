@@ -8,7 +8,6 @@ import com.project.abogados.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,15 +47,17 @@ public class AbogadosService {
             abogadosDTO.setId_user(abogados.getUser().getId_user());
             abogadosDTO.setPrimerNombreUsuario(abogados.getUser().getPrimerNombre());
             abogadosDTO.setPrimerApellidoUsuario(abogados.getUser().getPrimerApellido());
+            abogadosDTO.setNumDoc(abogados.getUser().getNumeroDocumento());
         }else {
             abogadosDTO.setId_user(null);
             abogadosDTO.setPrimerNombreUsuario(null);
             abogadosDTO.setPrimerApellidoUsuario(null);
+            abogadosDTO.setNumDoc(null);
         }
         return abogadosDTO;
     }
 
-    public void crearAbogado(AbogadosDTO abogadosDTO){
+    public AbogadosDTO crearAbogado(AbogadosDTO abogadosDTO){
         Abogados nuevoAbogado = new Abogados();
         nuevoAbogado.setEspecialidad(abogadosDTO.getEspecialidad());
         nuevoAbogado.setTarjetaProfesional(abogadosDTO.getTarjetaProfesional());
@@ -71,6 +72,7 @@ public class AbogadosService {
 
         abogadoRepository.save(nuevoAbogado);
 
+        return abogadosDTO;
     }
 
     public AbogadosDTO obtenerAbogadoId(Long id){

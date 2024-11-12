@@ -5,9 +5,12 @@ import com.project.abogados.model.CasosInformales;
 import com.project.abogados.model.TiposAbogados;
 import com.project.abogados.repository.CasosInformalesRepository;
 import com.project.abogados.repository.TiposAbogadosRepository;
-import jakarta.persistence.Access;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CasosInformalesService {
@@ -38,20 +41,39 @@ public class CasosInformalesService {
         return casosDTO;
     }
 
+    public List<CasosInformalesDTO> listCasos(){
+        List<CasosInformales> casosInformales = casosInformalesRepository.findAll();
+        return casosInformales.stream().map(this::transformDTO).collect(Collectors.toList());
+    }
 
-    public void crearAbogado(CasosInformalesDTO casosDTO){
+
+    public CasosInformalesDTO crearCasoInformal(CasosInformalesDTO casosDTO){
         CasosInformales casosInformales = new CasosInformales();
-
         casosInformales.setNombresCompletos(casosDTO.getNombresCompletos());
         casosInformales.setCorreo(casosDTO.getCorreo());
         casosInformales.setTelefono(casosDTO.getTelefono());
         casosInformales.setDescripcion(casosDTO.getDescripcion());
+        casosInformales.setFechaRegistro(LocalDateTime.now());
 
         TiposAbogados tiposAbogados = tiposAbogadosRepository.findById(casosDTO.getId_tipoAbogado())
                 .orElseThrow(()-> new RuntimeException("No se encontro el tipo de abogado"));
         casosInformales.setTiposAbogados(tiposAbogados);
 
         casosInformalesRepository.save(casosInformales);
+
+        return new CasosInformalesDTO(
+                casosInformales.getNombresCompletos(),
+                casosInformales.getCorreo(),
+                casosInformales.getFechaRegistro()
+        );
+
+    }
+
+    public CasosInformalesDTO obtenerCasoId(Long id){
+        CasosInformales casosInformales = casosInformalesRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("No se encontro el ID del caso informal"));
+        CasosInformalesDTO informalesDTO = transformDTO(casosInformales);
+        return informalesDTO;
     }
 
 }

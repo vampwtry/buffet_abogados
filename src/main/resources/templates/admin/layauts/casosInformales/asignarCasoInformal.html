@@ -91,77 +91,72 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Lista de Usuarios</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a th:href="@{/admin}">Panel de reportes</a></li>
-                            <li class="breadcrumb-item active">Usuarios</li>
+                            <li class="breadcrumb-item active">Abogados</li>
                         </ol>
                         <div class="card mb-4">
-                            <div class="card-body">
-                                Recuerda que al crear un usuario debes estar seguro de asignar el rol correspondiente ya que el sistema podria ser vulnerado segun la
-                                <a target="_blank" href="https://datatables.net/">politica de seguridad</a>
-                                .
-                            </div>
-                            <br>
                             <div class="card-header d-flex justify-content-between ">
-                                <h5><i class="fas fa-table me-1"></i></h5>
-                                <a th:href="@{/admin/usuarios}" class="btn btn-secondary">Volver al listado de usuarios</a>
+                                <h5><i class="fas fa-table me-1"></i> Creacion de abogado</h5>
+                                <a th:href="@{/admin/abogados}" class="btn btn-primary">Volver al listado de abogados</a>
                             </div>
                             <div class="card-body">
-                                <form th:action="@{/usuarios/guardar}" th:object="${usuario}" method="post">
-
-                                    <div class="row">
-                                        <div class="col-md-3 mb-3">
-                                            <label for="primerNombre" class="form-label">Primer Nombre</label>
-                                            <input type="text" class="form-control" th:field="*{primerNombre}" id="primerNombre" placeholder="Ingrese el primer nombre">
+                                <div class="card shadow-sm mb-4">
+                                    <div class="card-header bg-dark text-white">
+                                        <h5 class="mb-0">Información del Usuario</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <p><strong>Nombre Completo:</strong></p>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <p th:text="${usuario?.primerNombre + ' ' + usuario?.primerApellido}">[Nombre completo]</p>
+                                            </div>
                                         </div>
-                                        <div class="col-md-3 mb-3">
-                                            <label for="segundoNombre" class="form-label">Segundo Nombre</label>
-                                            <input type="text" class="form-control" th:field="*{segundoNombre}" id="segundoNombre" placeholder="Ingrese el segundo nombre">
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <p><strong>Correo Electrónico:</strong></p>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <p th:text="${usuario?.correo}"></p>
+                                            </div>
                                         </div>
-                                        <div class="col-md-3 mb-3">
-                                            <label for="primerApellido" class="form-label">Primer Apellido</label>
-                                            <input type="text" class="form-control" th:field="*{primerApellido}" id="primerApellido" placeholder="Ingrese el primer apellido">
-                                        </div>
-                                        <div class="col-md-3 mb-3">
-                                            <label for="segundoApellido" class="form-label">Segundo Apellido</label>
-                                            <input type="text" class="form-control" th:field="*{segundoApellido}" id="segundoApellido" placeholder="Ingrese el segundo apellido">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <p><strong>Fecha de registro:</strong></p>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <p th:text="${usuario?.fechaRegistro}"></p>
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="row">
-                                        <!-- Número de Documento -->
-                                        <div class="col-md-6 mb-3">
-                                            <label for="numeroDocumento" class="form-label">Número de Documento</label>
-                                            <input type="text" class="form-control" th:field="*{numeroDocumento}" id="numeroDocumento" placeholder="Ingrese el número de documento">
+                                <div class="row">
+                                    <form th:action="@{/abogados/guardar}" th:object="${abogado}" method="post">
+                                        <div class="mb-3">
+                                            <input type="hidden" th:value="${usuario?.id_user}" th:field="*{id_user}">
                                         </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Tipo de documento</label>
-                                            <select th:field="*{id_tipoDocumento}" class="form-select" aria-label="Seleccione un tipo de documento">
-                                                <option th:each="tipoDoc : ${tiposDocumentos}" th:value="${tipoDoc.id}" th:text="${tipoDoc.nombre}"></option>
+                                        <div class="mb-3">
+                                            <label for="especialidad" class="form-label">Especialidad</label>
+                                            <input th:field="*{especialidad}" type="text" class="form-control" id="especialidad">
+                                            <div id="emailHelp" class="form-text">Especialidad en la cual se especialza .</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="tarjetaProfesional" class="form-label">Tarjeta profesional</label>
+                                            <input th:field="*{tarjetaProfesional}" type="text" class="form-control" id="tarjetaProfesional">
+                                        </div>
+                                        <div class="mb-3 ">
+                                            <label for="tarjetaProfesional" class="form-label">Tipo de Abogado</label>
+                                            <select th:field="*{id_tipoAbogado}" class="form-select" aria-label="Default select example">
+                                                <option th:each="t : ${tipAbogados}" th:value="${t.id_tipoAbogado}" th:text="${t.nombre}"></option>
                                             </select>
                                         </div>
-                                    </div>
+                                        <button type="submit" class="btn btn-primary">Crear al Abogado</button>
+                                    </form>
 
-                                    <div class="row">
-                                        <div class="col-md-4 mb-3">
-                                            <label for="contraseña" class="form-label">Contraseña</label>
-                                            <input type="password" class="form-control" th:field="*{contraseña}" id="contraseña" placeholder="Ingrese la contraseña">
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label for="correo" class="form-label">correo</label>
-                                            <input type="email" class="form-control" th:field="*{correo}" id="correo" placeholder="Correo electronico">
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label for="numeroTelefono" class="form-label">Numero de telefono</label>
-                                            <input type="number" class="form-control" th:field="*{numeroTelefono}" id="numeroTelefono" placeholder="Numero de telefono">
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex justify-content-center">
-                                        <button type="submit" class="btn btn-secondary">Crear Usuario</button>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>

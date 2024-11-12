@@ -1,24 +1,46 @@
 package com.project.abogados.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.abogados.dtos.AbogadosDTO;
 import com.project.abogados.dtos.UsuarioDTO;
-import com.project.abogados.model.Abogados;
 import com.project.abogados.model.Roles;
 import com.project.abogados.model.TiposAbogados;
-import com.project.abogados.model.TiposDocumentos;
 import com.project.abogados.repository.AbogadoRepository;
 import com.project.abogados.repository.RolRepository;
 import com.project.abogados.repository.TiposAbogadosRepository;
 import com.project.abogados.services.*;
-import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.Optional;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import com.project.abogados.dtos.CasosInformalesDTO;
+import com.project.abogados.services.CasosInformalesService;
+import com.project.abogados.services.TiposAbogadosService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 @RequestMapping("/abogados")
@@ -42,8 +64,8 @@ public class abogdosController {
         List<UsuarioDTO> usuarioRol = usuarioService.obtenerUsers("ROLE_USER");
         model.addAttribute("usuarios", usuarioRol);
         return "admin/layauts/Abogados/CrearAbogado";
-
     }
+
     @GetMapping("/agregar/{id}")
     public String agregarAbogado(@PathVariable("id") Long IdUsuario, Model model){
         UsuarioDTO usuarioDTO = usuarioService.obtenerUsuarioId(IdUsuario);
@@ -57,17 +79,23 @@ public class abogdosController {
         return "admin/layauts/Abogados/nuevoAbogado";
     }
 
-
     @PostMapping("/guardar")
-    public String guardarAbogado(@ModelAttribute("abogado") AbogadosDTO abogadosDTO, BindingResult result, Model model) {
+    public String guardarAbogado(@ModelAttribute("abogado") AbogadosDTO abogadosDTO,
+                                 @RequestParam("documento") MultipartFile documento,
+                                 BindingResult result,
+                                 Model model,
+                                 RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             List<TiposAbogados> tiposAbogados = tiposAbogadosService.listTiposAbogados();
             model.addAttribute("tipAbogados", tiposAbogados);
-            return "admin/layauts/usuarios/crearUsuario?error";
+            return "redirect:/admin/abogados?error";
         }
 
         try {
-            abogadosService.crearAbogado(abogadosDTO);
+            // Guardar el abogado en la base de datos
+            AbogadosDTO abogadoGuardado = abogadosService.crearAbogado(abogadosDTO);
+
+            // Asignar rol al usuario
             UsuarioDTO usuarioDTO = usuarioService.obtenerUsuarioId(abogadosDTO.getId_user());
             Optional<Roles> rolAbogado = rolRepository.findByNombreRol("ROLE_ABOGADO");
 
@@ -75,20 +103,34 @@ public class abogdosController {
                 usuarioDTO.setRolID(rolAbogado.get().getIdRol());
                 usuarioService.actualizarRolUsuario(usuarioDTO);
             } else {
-                model.addAttribute("errorMessage", "No se encontró el rol de abogado.");
-                List<TiposAbogados> tiposAbogados = tiposAbogadosService.listTiposAbogados();
-                model.addAttribute("tipAbogados", tiposAbogados);
-                return "admin/layauts/Abogados/nuevoAbogado";
+                redirectAttributes.addFlashAttribute("error", "No se encontró el rol de abogado.");
+                return "redirect:/admin/abogados";
             }
+
+            // Preparar datos para enviar a Power Automate
+            String fechaActual = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
+            String numeroDoc = String.valueOf(abogadoGuardado.getNumDoc());
+
+            callPowerAutomateApi(
+                    abogadoGuardado.getTipoAbogado(), // Ajusta según los campos de tu DTO
+                    numeroDoc,
+                    fechaActual,
+                    "DocumentAbogado",
+                    documento
+            );
+
+            redirectAttributes.addFlashAttribute("success", "Abogado creado y datos enviados correctamente.");
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "Error al guardar el abogado: " + e.getMessage());
-            List<TiposAbogados> tiposAbogados = tiposAbogadosService.listTiposAbogados();
-            model.addAttribute("tipAbogados", tiposAbogados);
-            return "admin/layauts/Abogados/nuevoAbogado";
+            redirectAttributes.addFlashAttribute("error", "Error al guardar el abogado o enviar datos a la API: " + e.getMessage());
+            return "redirect:/admin/abogados?error";
         }
 
         return "redirect:/admin/abogados?success";
     }
+
+
+
+
 
     @GetMapping("/detalle/{id}")
     public String detalleAbogado(@PathVariable("id") Long id, Model model) {
@@ -97,6 +139,48 @@ public class abogdosController {
         return "redirect:admin/layauts/abogados";
     }
 
+
+
+
+    public void callPowerAutomateApi(String fullName, String email, String fecha, String tipoEjecucion, MultipartFile documento) throws Exception {
+        // URL de la API
+        String url = "https://prod-115.westus.logic.azure.com:443/workflows/7c1cbb422a934ee5ab3c07121b133011/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=C5v8bY9MdF1xz1Eqloz38JyXwZ-b9majL3PuotIf7n4";
+
+        // Crear JSON dinámico
+        Map<String, String> datos = new HashMap<>();
+        datos.put("fullName", fullName);
+        datos.put("email", email);
+        datos.put("fecha", fecha);
+        datos.put("tipoEjecucion", tipoEjecucion);
+
+        // Incluir el documento en Base64, si existe
+        if (documento != null && !documento.isEmpty()) {
+            byte[] bytes = documento.getBytes();
+            String base64Documento = Base64.getEncoder().encodeToString(bytes);
+            datos.put("nombreArchivo", documento.getOriginalFilename());
+            datos.put("tipoArchivo", documento.getContentType());
+            datos.put("contenidoBase64", base64Documento);
+        }
+
+        // Convertir datos a JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(datos);
+
+        // Configurar y realizar la solicitud HTTP
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        // Validar respuesta
+        if (response.statusCode() != 200) {
+            throw new Exception("Error al enviar los datos a Power Automate: " + response.body());
+        }
+    }
 
 
 }

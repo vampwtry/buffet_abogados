@@ -47,47 +47,36 @@
                                 Panel de reportes
                             </a>
                             <div class="sb-sidenav-menu-heading">Maestros</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayout" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-database"></i></div>
+                                Parametros
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayout" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" th:href="@{/admin/tiposDocs}">Tipos de documentos</a>
+                                    <a class="nav-link" href="#">Tipos de abogados</a>
+                                </nav>
+                            </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-users"></i></div>
                                 Gestion del usuario
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" th:href="@{/admin/usuarios}">Usuarios</a>
-                                    <a class="nav-link" href="#">Casos informales</a>
+                                    <a class="nav-link" th:href="@{/admin/abogados}">Abogados</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Gestion de abogados
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-user-secret"></i></div>
+                                Gestion de casos
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link" th:href="@{/admin/abogados}">Todos los Abogados</a>
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Penales" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Penales
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="Penales" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="#">1</a>
-                                            <a class="nav-link" href="#">2</a>
-                                            <a class="nav-link" href="#">3</a>
-                                        </nav>
-                                    </div>
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#AbogadosFamilia" aria-expanded="false" aria-controls="pagesCollapseError">
-                                        Familia
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="AbogadosFamilia" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="#">1</a>
-                                            <a class="nav-link" href="#">2</a>
-                                            <a class="nav-link" href="#">3</a>
-                                        </nav>
-                                    </div>
+                                    <a class="nav-link" th:href="@{/admin/casosInformales}">Casos Informales</a>
                                 </nav>
                             </div>
                             <div class="sb-sidenav-menu-heading">Aula de la firma</div>
@@ -110,10 +99,21 @@
                         <div class="card mb-4">
                             <div class="card-header d-flex justify-content-between ">
                                 <h5><i class="fas fa-table me-1"></i> Usuarios creados</h5>
-
                                 <a th:href="@{/usuarios/crear}" class="btn btn-primary">Nuevo usuario</a>
                             </div>
                             <div class="card-body">
+                                <!-- Alerta de éxito -->
+                                <div class="alert alert-success" th:if="${success}" role="alert">
+                                    <span th:text="'Código: ' + ${status} + ' - Respuesta Https: ' + ${success}"><i class="fa-solid fa-square-check" style="color: #1b9d76;"></i></span>
+                                </div>
+                                <!-- Alerta de error -->
+                                <div class="alert alert-danger" th:if="${error}" role="alert">
+                                    <span th:text="${error}"></span>
+                                </div>
+                                <!-- Alerta de información -->
+                                <div class="alert alert-info" th:if="${info}" role="alert">
+                                    <span th:text="${info}"></span>
+                                </div>
                                 <table class="table text-center" id="usuarios-Json">
                                     <thead>
                                         <tr>
@@ -132,12 +132,13 @@
                                             <th th:text="${usr.numeroTelefono}"></th>
                                             <th th:text="${#temporals.format(usr.fechaRegistro, 'dd/MM/yyyy')}"></th>
                                             <th>
-                                                <a href="#"
-                                                   class="btn btn-primary"
-                                                   th:attr="data-email=${usr.correo}, disabled=${usr.msjBienvenida ? null : 'disabled'}"
-                                                   onclick="sendEmail(this)">
-                                                    <i class="fa-solid fa-envelope-open-text"></i>
-                                                </a>
+                                                <form th:action="@{/callApi}" method="post">
+                                                    <input type="hidden" name="fullName" th:value="${usr.primerNombre + ' ' + usr.segundoNombre + ' ' + usr.primerApellido+ ' ' + usr.segundoApellido}" />
+                                                    <input type="hidden" name="email" th:value="${usr.correo}" />
+                                                    <input type="hidden" name="fecha" th:value="${usr.fechaRegistro}" />
+                                                    <input type="hidden" name="tipoEjecucion" value="usrBienvenida" />
+                                                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text"></i></button>
+                                                </form>
                                             </th>
                                             <th>
                                                 <a class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
@@ -165,41 +166,5 @@
         <script th:src="@{/js/admin/scripts.js}"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
-    <script>
-        function sendEmail(element) {
-    const email = element.getAttribute('data-email');
-    console.log('Email obtenido:', email); // Log para depuración
-
-    if (email) {
-        fetch('/api/send-email', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email: email })
-        })
-        .then(response => {
-            if (response.ok) {
-                console.log('Solicitud enviada con éxito');
-                return response.text();
-            } else {
-                console.error('Error en la respuesta del servidor:', response.status);
-                throw new Error('No se pudo enviar el correo. Intenta nuevamente.');
-            }
-        })
-        .then(data => {
-            alert('Respuesta del servidor: ' + data); // Mensaje exitoso
-        })
-        .catch(error => {
-            console.error('Error al enviar:', error.message);
-            alert('Error: ' + error.message);
-        });
-    } else {
-        alert('No se pudo obtener el correo.');
-    }
-}
-
-    </script>
-
     </body>
 </html>

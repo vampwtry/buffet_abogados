@@ -1,10 +1,12 @@
 package com.project.abogados.controller;
 
 import com.project.abogados.dtos.AbogadosDTO;
+import com.project.abogados.dtos.CasosInformalesDTO;
 import com.project.abogados.dtos.TiposDocumentosDTO;
 import com.project.abogados.dtos.UsuarioDTO;
 import com.project.abogados.model.Abogados;
 import com.project.abogados.services.AbogadosService;
+import com.project.abogados.services.CasosInformalesService;
 import com.project.abogados.services.TiposDocumentosService;
 import com.project.abogados.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class AdminController {
     private AbogadosService abogadosService;
     @Autowired
     private TiposDocumentosService documentosService;
+    @Autowired
+    private CasosInformalesService casosInformalesService;
 
     @GetMapping("/admin")
     public String paginaAdminLogin(Model model){
@@ -49,6 +53,13 @@ public class AdminController {
         List<TiposDocumentosDTO> documentosDTOS = documentosService.listTiposDocumentos();
         model.addAttribute("tipDocs",documentosDTOS);
         return "admin/layauts/Parametros/tipoDocumento/tipoDocumentos";
+    }
+
+    @GetMapping("/admin/casosInformales")
+    public String listCasosInformales(Model model){
+        List<CasosInformalesDTO> informalesDTOS = casosInformalesService.listCasos();
+        model.addAttribute("casos",informalesDTOS);
+        return "admin/layauts/casosInformales";
     }
 }
 

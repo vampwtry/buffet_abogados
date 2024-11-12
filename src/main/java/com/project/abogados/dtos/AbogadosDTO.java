@@ -17,4 +17,5 @@ public class AbogadosDTO {
     private String tipoAbogado;
     private String primerNombreUsuario;
     private String primerApellidoUsuario;
+    private Integer numDoc;
 }

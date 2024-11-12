@@ -47,47 +47,36 @@
                                 Panel de reportes
                             </a>
                             <div class="sb-sidenav-menu-heading">Maestros</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayout" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-database"></i></div>
+                                Parametros
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayout" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" th:href="@{/admin/tiposDocs}">Tipos de documentos</a>
+                                    <a class="nav-link" href="#">Tipos de abogados</a>
+                                </nav>
+                            </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-users"></i></div>
                                 Gestion del usuario
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" th:href="@{/admin/usuarios}">Usuarios</a>
-                                    <a class="nav-link" href="#">Casos informales</a>
+                                    <a class="nav-link" th:href="@{/admin/abogados}">Abogados</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Gestion de abogados
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-user-secret"></i></div>
+                                Gestion de casos
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link" th:href="@{/admin/abogados}">Todos los Abogados</a>
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Penales" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Penales
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="Penales" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="#">1</a>
-                                            <a class="nav-link" href="#">2</a>
-                                            <a class="nav-link" href="#">3</a>
-                                        </nav>
-                                    </div>
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#AbogadosFamilia" aria-expanded="false" aria-controls="pagesCollapseError">
-                                        Familia
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="AbogadosFamilia" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="#">1</a>
-                                            <a class="nav-link" href="#">2</a>
-                                            <a class="nav-link" href="#">3</a>
-                                        </nav>
-                                    </div>
+                                    <a class="nav-link" th:href="@{/admin/casosInformales}">Casos Informales</a>
                                 </nav>
                             </div>
                             <div class="sb-sidenav-menu-heading">Aula de la firma</div>
@@ -102,14 +91,14 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">lista de Abogados</h1>
+                        <h1 class="mt-4">Creacion de Abogados</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a th:href="@{/admin}">Panel de reportes</a></li>
                             <li class="breadcrumb-item active">Abogados</li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-header d-flex justify-content-between ">
-                                <h5><i class="fas fa-table me-1"></i> Recursos disponibles para asignar rol de abogado</h5>
+                                <h5><i class="fas fa-table me-1"></i> Usuarios disponibles para asignar el rol de abogado</h5>
 
                                 <a th:href="@{/admin/abogados}" class="btn btn-primary">Volver al listado de abogados</a>
                             </div>
